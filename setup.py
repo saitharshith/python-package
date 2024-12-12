@@ -25,4 +25,4 @@ setup( #pakage setup
     },
     package_dir={"": "src"},
     packages=find_packages(where="src"),
-    )
+)

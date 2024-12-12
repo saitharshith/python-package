@@ -1,3 +1,4 @@
+# Trigger this workflow on push or pull request to the main branch
 name: Python application
 
 on:
@@ -9,30 +10,33 @@ on:
     branches: [ "main" ]
     paths-ignore:
         - 'README.md'  
-
-
 permissions:
   contents: read
-
+# Define the jobs to run
 jobs:
   build:
 
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest] 
+        os: [ubuntu-latest, windows-latest] # Choose a virtual machine for the job
         python-version: ["3.8",'3.9']
 
+# Steps are the sequence of actions to take in the job
     steps:
+    # Step 1: Check out the repository
     - uses: actions/checkout@v3
+    # Step 2: Set up Python
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v3
       with:
         python-version: ${{ matrix.python-version }}
+    # Step 3: Install dependencies
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
         pip install flake8 pytest tox tox-gh-actions
         pip install -r requirements.txt
+    # Step 4: Run tests using Tox (or pytest)
     - name: Test with tox
       run: tox
